@@ -692,6 +692,37 @@
         }
         
         function updateGameState(data) {
+            // 破産チェック
+            if (data.bankrupt) {
+                setTimeout(() => {
+                    playSound('win');
+                    const modal = document.getElementById('result-modal');
+                    const winnerText = document.getElementById('winner-text');
+                    const detailsDiv = document.getElementById('result-details');
+                    
+                    winnerText.textContent = '💸 ゲーム終了';
+                    detailsDiv.innerHTML = `
+                        <p style="text-align: center; font-size: 1.2rem; margin: 20px 0;">
+                            チップがなくなりました！
+                        </p>
+                        <p style="text-align: center; margin: 15px 0;">
+                            ${data.message || 'もう一度挑戦しますか？'}
+                        </p>
+                    `;
+                    
+                    // ボタンを「新しいゲームを開始」に変更
+                    const modalButton = modal.querySelector('button');
+                    modalButton.textContent = '新しいゲームを開始';
+                    modalButton.onclick = () => location.reload();
+                    
+                    modal.classList.add('active');
+                    
+                    // アクションボタンを無効化
+                    document.getElementById('action-buttons').innerHTML = '<button class="btn-primary" onclick="location.reload()">新しいゲームを開始</button>';
+                }, 500);
+                return;
+            }
+            
             document.getElementById('pot-amount').textContent = data.pot;
             const comm = document.getElementById('community-cards');
             comm.innerHTML = '';
