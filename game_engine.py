@@ -28,9 +28,9 @@ class PokerGame:
         self.players.append(self.human_player)
         
         # AI作成（3人、異なるスタイル）
-        self.players.append(AIPlayer("AI_Tight", 1000, PlayStyle.TIGHT))
-        self.players.append(AIPlayer("AI_Loose", 1000, PlayStyle.LOOSE))
-        self.players.append(AIPlayer("AI_Aggressive", 1000, PlayStyle.AGGRESSIVE))
+        self.players.append(AIPlayer("ドナルド", 1000, PlayStyle.TIGHT))
+        self.players.append(AIPlayer("ウラジーミル", 1000, PlayStyle.LOOSE))
+        self.players.append(AIPlayer("近平", 1000, PlayStyle.AGGRESSIVE))
     
     def start_new_hand(self):
         """新しいハンドを開始"""

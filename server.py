@@ -22,6 +22,12 @@ def start_hand():
     if game is None:
         game = PokerGame("You")
     
+    # AI名を確実に設定
+    if len(game.players) >= 4:
+        game.players[1].name = "ドナルド"
+        game.players[2].name = "ウラジーミル"  
+        game.players[3].name = "近平"
+    
     game.start_new_hand()
     
     return jsonify(get_game_state())
@@ -234,20 +240,21 @@ def get_feedback():
 
 def get_game_state():
     """現在のゲーム状態を取得"""
+    player_data = {}
+    for player in game.players:
+        player_data[player.name] = {
+            'chips': player.chips,
+            'current_bet': player.current_bet,
+            'is_folded': player.is_folded,
+            'is_all_in': player.is_all_in,
+            'hand': [str(c) for c in player.hand] if player.is_human else None
+        }
+    
     return {
         'pot': game.pot,
         'current_bet': game.current_bet,
         'community_cards': [str(c) for c in game.community_cards],
-        'players': {
-            player.name: {
-                'chips': player.chips,
-                'current_bet': player.current_bet,
-                'is_folded': player.is_folded,
-                'is_all_in': player.is_all_in,
-                'hand': [str(c) for c in player.hand] if player.is_human else None
-            }
-            for player in game.players
-        },
+        'players': player_data,
         'street': game.current_street
     }
 
